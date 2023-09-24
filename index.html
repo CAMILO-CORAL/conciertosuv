@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>  
+    <meta charset="UTF-8">
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.6.0/leaflet.css" />
+
+    <script src="jquery-3.4.1.js"></script>
+
+    <script src="https://kit.fontawesome.com/02eb88b373.js" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.6.0/leaflet.js"></script>
+
+    <style>
+    header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 40px;}
+
+    h1 {
+    margin: 0;
+    font-size: 36px;}
+
+    h2 {
+    margin: 0;
+    font-size: 18px;}
+    
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;}
+
+    .descripcion {
+    padding: 20px;
+    text-align: center;}
+
+    #anterior,
+    #siguiente {
+    background-color: #878888;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;}
+
+    #anterior {
+    display: inline-block;
+    padding: 6px 15px;
+    background-color: #878888;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;}
+
+    #siguiente {
+    display: inline-block;
+    padding: 6px 15px;
+    background-color: #878888;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;}
+
+    .imagen {
+    text-align: center;}
+
+    .imagen-container {
+    width: 100%;
+    overflow: hidden; 
+    position: relative;
+    text-align: center;}
+
+    .imagen-container img {
+    width: 100%;
+    display: none; 
+    height: auto;
+    display: none;
+    margin: 0 auto;}
+
+    .imagen img {
+    width: 30%;
+    height: auto;}
+    
+    .reserva_boletos {
+    text-align: center;
+    padding: 20px;
+    background-color: #fff;}
+
+    h3 {
+    margin: 0;
+    font-size: 15px;}
+
+    #boton_reserva{ 
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;}
+
+    input.n_completo {
+    width: 40%;
+    padding: 10px;
+    font-size: 14px;
+    border: 2px solid #333;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    color: #333;}
+
+    input.n_completo::placeholder {
+    color: #999;
+    font-style: italic;}
+
+    input.c_estudiante {
+    width: 40%;
+    padding: 10px;
+    font-size: 14px;
+    border: 2px solid #333;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    color: #333;}
+
+
+    input.c_estudiante::placeholder {
+    color: #999;
+    font-style: italic;}
+
+    input.c_electronico {
+    width: 40%;
+    padding: 10px;
+    font-size: 14px;
+    border: 2px solid #333;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    color: #333;}
+
+    input.c_electronico::placeholder {
+    color: #999;
+    font-style: italic;}
+    
+    #botonReproducir {
+    display: inline-block;
+    padding: 6px 15px;
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;}
+
+    html, body{
+	height:100% ;
+	width:100% vw;}
+
+    #total{
+	width:100%;
+	height:100%;}
+    
+    #map{
+    width:100%;
+    height:40%;}
+    
+    footer {
+    text-align: center;
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    bottom: 0;
+    width: 100%;}
+    </style>
+
+    <title>CONCIERTO BAD BUNNY</title>
+</head>
+
+<body>
+    <div id="total">
+        <div id="s1">
+        <header>
+            <h1>BAD BUNNY EN UNIVALLE 2023</h1>
+            <h2>Semana de Ingeniería Universidad del Valle</h2>
+            <br>
+            INICIO
+            INFORMACIÓN DE RESERVA    
+        </header>
+        <main>
+            <section class="descripcion">
+                <p>¡Prepárate para la experiencia musical del año! Estamos emocionados de anunciar que el fenómeno mundial de la música urbana, Bad Bunny, será el invitado especial en el cierre de la Semana de Ingeniería. Este evento épico fusionará el talento de Bad Bunny con la innovación y creatividad de la comunidad de univalluna. Será una noche que marcará la historia, ¡No querrás perderte este evento único!. Reserva esta noche en tu calendario, reserva tus boletos y prepárate para una noche inolvidable llena de ritmo, talento y diversión.</p>
+            </section>
+
+            <section class="imagen">
+                <div class="imagen-container">
+                    <img src="imagen1.jpg" alt="Imagen 1">
+                    <img src="imagen2.jpg" alt="Imagen 2">
+                    <img src="imagen_bad_bunny.jpg" alt="Bad Bunny">
+                    <img src="imagen3.jpg" alt="Imagen 3">
+                    <img src="imagen4.jpg" alt="Imagen 4">
+                    <img src="imagen5.jpg" alt="Imagen 5">
+                </div>
+                <br>
+                <button id="anterior">Anterior</button>
+                <button id="siguiente">Siguiente</button>
+            </section>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+            const imagenes = document.querySelectorAll(".imagen-container img");
+            const anteriorBtn = document.getElementById("anterior");
+            const siguienteBtn = document.getElementById("siguiente");
+            let indiceImagenActual = 0;
+
+            function mostrarImagen(indice) {
+                imagenes.forEach((imagen) => (imagen.style.display = "none"));
+                imagenes[indice].style.display = "block";
+            }
+
+            function siguienteImagen() {
+                indiceImagenActual = (indiceImagenActual + 1) % imagenes.length;
+                mostrarImagen(indiceImagenActual);
+            }
+
+            function anteriorImagen() {
+                indiceImagenActual = (indiceImagenActual - 1 + imagenes.length) % imagenes.length;
+                mostrarImagen(indiceImagenActual);
+            }
+
+            mostrarImagen(indiceImagenActual);
+
+            anteriorBtn.addEventListener("click", anteriorImagen);
+            siguienteBtn.addEventListener("click", siguienteImagen);
+
+         
+            const intervalo = setInterval(siguienteImagen, 10000);
+
+         
+            imagenes.forEach((imagen) => {
+                imagen.addEventListener("click", function() {
+                    clearInterval(intervalo);
+                });
+            });
+        });
+            </script>
+            
+            <br>
+            <br>
+
+            <section class="reserva_boletos">
+                <h3 class="r_b" >RESERVA TUS BOLETOS</h3>
+                <br> 
+                <input class="n_completo" type="text" placeholder="Nombre Completo">
+                <br><br>
+                <input class="c_estudiante" type="text" placeholder="Código Estudiante o Número de Cédula en Caso de Ser Trabajador">
+                <br>
+                <br>
+                <input class="c_electronico" type="text" placeholder="Correo Electronico @correounivalle.edu.co">
+                <br>
+                <p>Seleccion la Comunidad Universitaria que Perteneces:</p>
+                <input type="radio" name="prueba" value="Estudiante">Estudiante
+                <input type="radio" name="prueba" value="Profesor">Profesor
+                <input type="radio" name="prueba" value="Administrativo">Administrativo
+                <input type="radio" name="prueba" value="Trabajador">Trabajador
+                <br>
+                <br>
+                <input type="button" value="RESERVA TUS BOLETOS" id="boton_reserva"> 
+                <p>Fecha: [Viernes 8 de Septiembre 2023, Semana Ingeniería]</p>
+                <p>Lugar: [Plazoleta de Ingeniería, Universidad del Valle]</p>
+                <button id="botonReproducir">Algo de Bad Bunny</button>
+                <br>
+                <audio id="miAudio" controls style="display: none;">
+                    <source src="neverita.mp3" type="audio/mpeg">
+                    Tu navegador no soporta la reproducción de audio.
+                </audio>
+                <br>
+                <h3>En caso de no ser parte de la comunidad Universitaria, puedes ingreser al evento comprando los boletos en el siguiente link:</h3>
+                <a href="comprar_boletos.html" class="boton">Comprar boletos</a>
+            </section>
+        </div>
+
+
+        <div id="map" style="z-index:0"></div>
+
+        
+        <footer>
+            <p>&copy; 2023 UNIVERSIDAD DEL VALLE</p>
+        </footer>
+    </div>
+
+
+    </main>
+
+
+</body>
+    
+    <script>
+            const miAudio = document.getElementById('miAudio');
+    const botonReproducir = document.getElementById('botonReproducir');
+
+
+    botonReproducir.addEventListener('click', function() {
+        if (miAudio.paused) {
+            miAudio.play();
+            botonReproducir.textContent = 'Pausar al Conejo';
+        } else {
+            miAudio.pause();
+            botonReproducir.textContent = 'Seguir Escuchando al Conejo';
+        }
+    });
+    </script>
+
+    <script>
+    var map = L.map('map',
+    {
+        zoom: 100
+    }).setView([3.375958,-76.532793], 12);
+
+    var mapabase = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
+    {
+        maxZoom: 30,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    });
+        
+    mapabase.addTo(map);
+    L.marker([3.375958,-76.532793]).addTo(map);
+    L.circle([3.375958,-76.532793],{radius:500}).addTo(map);
+    </script>
+</html>
